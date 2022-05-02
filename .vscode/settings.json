@@ -1,0 +1,54 @@
+{
+  "files.defaultLanguage": "c",
+  "editor.formatOnType": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMap": {
+    "c": "gcc '$fileName' -o '$fileNameWithoutExt.exe' -Wall -O2 -m64 -lm -static-libgcc -fexec-charset=GBK -D__USE_MINGW_ANSI_STDIO && &'./$fileNameWithoutExt.exe'",
+    "cpp": "g++ '$fileName' -o '$fileNameWithoutExt.exe' -Wall -O2 -m64 -static-libgcc -fexec-charset=GBK && &'./$fileNameWithoutExt.exe'"
+  },
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.preserveFocus": true,
+  "code-runner.clearPreviousOutput": false,
+  "code-runner.ignoreSelection": true,
+  "code-runner.fileDirectoryAsCwd": true,
+  "C_Cpp.clang_format_sortIncludes": true,
+  "C_Cpp_Runner.cCompilerPath": "C:/mingw64/bin/gcc.exe",
+  "C_Cpp_Runner.cppCompilerPath": "C:/mingw64/bin/g++.exe",
+  "C_Cpp_Runner.debuggerPath": "C:/mingw64/bin/gdb.exe",
+  "C_Cpp_Runner.cStandard": "",
+  "C_Cpp_Runner.cppStandard": "",
+  "C_Cpp_Runner.msvcBatchPath": "",
+  "C_Cpp_Runner.warnings": [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic"
+  ],
+  "C_Cpp_Runner.enableWarnings": true,
+  "C_Cpp_Runner.warningsAsError": false,
+  "C_Cpp_Runner.compilerArgs": [],
+  "C_Cpp_Runner.linkerArgs": [],
+  "C_Cpp_Runner.includePaths": [
+    "C:/mingw64/include"
+  ],
+  "C_Cpp_Runner.includeSearch": [
+    "*",
+    "**/*"
+  ],
+  "C_Cpp_Runner.excludeSearch": [
+    "**/build",
+    "**/build/**",
+    "**/.*",
+    "**/.*/**",
+    "**/.vscode",
+    "**/.vscode/**"
+  ],
+  "files.associations": {
+    "tidl_alg_int.h": "c",
+    "limits": "c",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "new": "cpp"
+  }
+}
