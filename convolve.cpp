@@ -2,32 +2,65 @@
 #include "math.h"
  
 using namespace std; 
-
+ 
+//******************gauskern generator*************************
+//gauss : a pointer to an array of 3 double types；
+//size : size of a gausskernel ；
+//sigma : the standard deviation of the convolution kernel
+//*************************************************************
+float ** GetGaussianKernel( const float sigma);
 void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int width);
+float padding(float **Img, char axis, int height, int width);
+void test_convolve();
+
+
+int gausskernel[3][3] = {{75, 123, 75}, {123, 200, 123}, {75, 123, 75}};
+
+float image1[4][4] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+
+float **image = (float **)malloc(sizeof(float *) * 4);
+
 
 int main(int argc, char *argv[])  
 {
-	const int size = 3;
+	test_convolve();
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			cout << image[i][j] << ' ';
+		}
+		cout << endl ;
+	}
+	system("pause");
+	return 0;
+}
+ 
 
-	int gausskernel[3][3] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
-
-	float image1[4][4] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17};
-
-	float **image = (float **)malloc(sizeof(float *) * 4);
-
+void test_convolve(){
 
 	for (int i = 0; i < 4;i++){
 		image[i] = image1[i];
 	}
-
-		convolve3x3(image, image, gausskernel, 4, 4); 
+	convolve3x3(image, image, gausskernel, 4, 4); 
+	
 }
- 
- 
 void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int width){
+	
+	//kernel normalization
+	int kernel_sum;
+	double normalized_gausskernel[3][3];
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			kernel_sum = kernel_sum + kernel[i][j];
+		}
+	}
 
-	int y_kernel[3] = {kernel[0][0], kernel[0][1],  kernel[0][2]};
-	int x_kernel[3] = {kernel[0][0] / kernel[0][0], kernel[0][1] / kernel[0][0], kernel[0][2] / kernel[0][0]};
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			normalized_gausskernel[i][j] = (double)gausskernel[i][j] / kernel_sum;
+		}
+	}
+	double y_kernel[3] = {normalized_gausskernel[0][0], normalized_gausskernel[0][1],  normalized_gausskernel[0][2]};
+	double x_kernel[3] = {normalized_gausskernel[0][0] / normalized_gausskernel[0][0], normalized_gausskernel[0][1] / normalized_gausskernel[0][0], normalized_gausskernel[0][2] / normalized_gausskernel[0][0]};
 	
 	float x_padding_image[height][width + 2];
 	float y_padding_image[height + 2][width];
@@ -47,22 +80,6 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 					}
 		}
 
-		for (int j = 0; j < width; j++) // padding the 1. and last columns
-		{
-			y_padding_image[0][j] = 0;
-			y_padding_image[height + 1][j] = 0;
-		}
-		// filling padding_img with orig. image
-		for (int i = 0; i < width; i++)
-		{
-			for (int j = 0; j < height ; j++) 
-					{
-						y_padding_image[i + 1][j] = Img[i][j];
-					}
-		}	
-	// x_padding_image[height][width + 2] = padding(Img, 'x', height, width);
-	// y_padding_image[height + 2][width] = padding(Img, 'y', height, width);
-
 	float x_out_image[height][width];
 	float y_out_image[height][width];
 	float out_image[height][width];
@@ -80,6 +97,20 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 		}
 	}
 
+		for (int j = 0; j < width; j++) // padding the 1. and last columns
+		{
+			y_padding_image[0][j] = 0;
+			y_padding_image[height + 1][j] = 0;
+		}
+		// filling padding_img with orig. image
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height ; j++) 
+					{
+						y_padding_image[i + 1][j] = x_out_image[i][j];
+					}
+		}	
+		
 	//convolve with the y_kernel
 	for (int i = 0; i < height; i++){
 		for (int j = 0; j < width; j++)
@@ -91,22 +122,23 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 			}
 		}
 	}
-   	// multiply matrix
-	for (int i = 0; i < height; i++){
-		for (int j = 0; j < width; j++)
-		{
-			float out_sum = 0;
-			for (int k = 0; k < width; k++){
-				out_sum = out_sum + x_out_image[i][k] * y_out_image[k][j];
-				out_image[i][j] = out_sum;
-			}
-		}
-	}
+   	// // multiply matrixes
+	// for (int i = 0; i < height; i++){
+	// 	for (int j = 0; j < width; j++)
+	// 	{
+	// 		float out_sum = 0;
+	// 		for (int k = 0; k < width; k++){
+	// 			out_sum = out_sum + x_out_image[i][k] * y_out_image[k][j];
+	// 			out_image[i][j] = out_sum;
+	// 		}
+	// 	}
+	// }
 
 	for (int i = 0; i < height; i++){
 		for (int j = 0; j < width; j++)
 		{
-			Img[i][j] = out_image[i][j];
+			// Img[i][j] = out_image[i][j] / kernel_sum;
+			Img[i][j] = y_out_image[i][j];
 		}
 	}
 }
