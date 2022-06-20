@@ -49,6 +49,19 @@
     "limits": "c",
     "iostream": "cpp",
     "ostream": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "cmath": "cpp",
+    "array": "cpp",
+    "atomic": "cpp",
+    "*.tcc": "cpp",
+    "bitset": "cpp",
+    "algorithm": "cpp",
+    "functional": "cpp",
+    "istream": "cpp",
+    "regex": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp",
+    "utility": "cpp",
+    "valarray": "cpp"
   }
 }

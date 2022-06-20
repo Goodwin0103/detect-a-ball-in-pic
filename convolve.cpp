@@ -2,15 +2,8 @@
 #include "math.h"
  
 using namespace std; 
- 
-//******************gauskern generator*************************
-//gauss : a pointer to an array of 3 double types；
-//size : size of a gausskernel ；
-//sigma : the standard deviation of the convolution kernel
-//*************************************************************
-float ** GetGaussianKernel( const float sigma);
+
 void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int width);
-float padding(float **Img, char axis, int height, int width);
 void test_convolve();
 
 
@@ -122,17 +115,6 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 			}
 		}
 	}
-   	// // multiply matrixes
-	// for (int i = 0; i < height; i++){
-	// 	for (int j = 0; j < width; j++)
-	// 	{
-	// 		float out_sum = 0;
-	// 		for (int k = 0; k < width; k++){
-	// 			out_sum = out_sum + x_out_image[i][k] * y_out_image[k][j];
-	// 			out_image[i][j] = out_sum;
-	// 		}
-	// 	}
-	// }
 
 	for (int i = 0; i < height; i++){
 		for (int j = 0; j < width; j++)
