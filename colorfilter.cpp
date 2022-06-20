@@ -31,28 +31,17 @@ int main(int argc, char *argv[])
 
 void ColorFilter ( int a , float ** R , float** G, float** B , float** Mask , int height , int width ) {
 
-    int center_x = height / 2;
-    int center_y = width / 2;
+    // rgb wert von Gelb 255 255 0 
+
     for(int i = 0; i < height; i++)
         {
             for(int j = 0; j < width; j++)
             {
-                // float tmp = abs(pow((j - center_x), 2)+ pow((i - center_y), 2) );
-                // cout << tmp << endl;
-                if(  pow((j - center_x), 2)+ pow((i - center_y), 2)> pow(a , 2) ){
-                    R[i][j] = 0;
+                if( pow((R[i][j] - 255), 2)+ pow((G[i][j] - 255), 2)+ pow((B[i][j] - 0), 2)> pow(a , 2) ){
+                    Mask[i][j] = 0;
                 }
-                else R[i][j] = 255;
+                else Mask[i][j] = 255;
 
-                // if( (i - center_x)^2 + (j - center_y)^2 > a^2 ){
-                //     G[i][j] = 0;
-                // }
-                // else G[i][j] = 255;
-
-                // if( (i - center_x)^2 + (j - center_y)^2 > a^2 ){
-                //     B[i][j] = 0;
-                // }
-                // else B[i][j] = 255;
             }
         }
 }
