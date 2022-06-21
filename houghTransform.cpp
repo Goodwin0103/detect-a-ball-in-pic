@@ -8,20 +8,20 @@ int HoughTransform ( int R , unsigned char **EdgeMask , unsigned char **AccuGrid
 
 int main(int argc, char *argv[])  
 {
-    for (int i = 0; i < 12;i++){
-		image[i] = image1[i];
-	}
-    for (int i = 0; i < 3;i++){
-		EdgeMask[i] = EdgeMask1[i];
-	}
+//     for (int i = 0; i < 12;i++){
+// 		image[i] = image1[i];
+// 	}
+//     for (int i = 0; i < 3;i++){
+// 		EdgeMask[i] = EdgeMask1[i];
+// 	}
 
     
-    for (int i = 0; i < 12; i++){
-		for (int j = 0; j < 12; j++){
-			cout << image[i][j] << ' ';
-		}
-		cout << endl ;
-	}
+//     for (int i = 0; i < 12; i++){
+// 		for (int j = 0; j < 12; j++){
+// 			cout << image[i][j] << ' ';
+// 		}
+// 		cout << endl ;
+// 	}
 	system("pause");
 	return 0;
 }
@@ -32,7 +32,7 @@ int HoughTransform ( int R , unsigned char **EdgeMask , unsigned char **AccuGrid
     for (int i = 0; i < height ; i++){
 		for (int j = 0; j < width ; j++)
 		{   
-            if(EdgeMask[i][j] !=0 ){
+            if(EdgeMask[i][j] == 255 ){
                 accumulateCircles(AccuGrid, R, i, j);
             }
 		}

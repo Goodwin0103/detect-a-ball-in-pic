@@ -13,13 +13,16 @@ float image1[4][4] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
 
 float **image = (float **)malloc(sizeof(float *) * 4);
 
+float ImgFilt1[4][4] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+
+float **ImgFilt = (float **)malloc(sizeof(float *) * 4);
 
 int main(int argc, char *argv[])  
 {
 	test_convolve();
 	for (int i = 0; i < 4; i++){
 		for (int j = 0; j < 4; j++){
-			cout << image[i][j] << ' ';
+			cout << ImgFilt[i][j] << ' ';
 		}
 		cout << endl ;
 	}
@@ -33,7 +36,10 @@ void test_convolve(){
 	for (int i = 0; i < 4;i++){
 		image[i] = image1[i];
 	}
-	convolve3x3(image, image, gausskernel, 4, 4); 
+		for (int i = 0; i < 4;i++){
+		ImgFilt[i] = ImgFilt1[i];
+	}
+	convolve3x3(image, ImgFilt, gausskernel, 4, 4); 
 	
 }
 void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int width){
@@ -95,7 +101,7 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 			y_padding_image[0][j] = 0;
 			y_padding_image[height + 1][j] = 0;
 		}
-		// filling padding_img with orig. image
+		// filling padding_img 
 		for (int i = 0; i < width; i++)
 		{
 			for (int j = 0; j < height ; j++) 
@@ -120,7 +126,7 @@ void convolve3x3(float **Img, float **ImgFilt, int kernel[3][3], int height, int
 		for (int j = 0; j < width; j++)
 		{
 			// Img[i][j] = out_image[i][j] / kernel_sum;
-			Img[i][j] = y_out_image[i][j];
+			ImgFilt[i][j] = y_out_image[i][j];
 		}
 	}
 }

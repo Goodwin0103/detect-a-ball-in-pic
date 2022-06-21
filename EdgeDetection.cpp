@@ -3,11 +3,23 @@
  
 using namespace std;
 
-void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width , int threshold );
+void EdgeDetection ( float **ColorMask , float **EdgeMask , int height , int width , int threshold );
 
-int EdgeMask1[3][3] = {{1, 2, 1}, {0, 0, 0}, {-1, -2, -1}};
+
 
 float image1[12][12] =   {0,0,0,0,0,0,0,0,0,0,0,0,
+                          0,0,0,0,0,0,0,0,0,0,0,0,
+                          0,0,0,0,0,0,0,0,0,0,0,0,
+                          0,0,0,255,255,255,255,255,255,0,0,0,
+                          0,0,0,255,255,255,255,255,255,0,0,0,
+                          0,0,0,255,255,255,255,255,255,0,0,0, 
+                          0,0,0,255,255,255,255,255,255,0,0,0,
+                          0,0,0,255,255,255,255,255,255,0,0,0,
+                          0,0,0,255,255,255,255,255,255,0,0,0,
+                          0,0,0,0,0,0,0,0,0,0,0,0,
+                          0,0,0,0,0,0,0,0,0,0,0,0,
+                          0,0,0,0,0,0,0,0,0,0,0,0 };
+float EdgeMask1[12][12] =   {0,0,0,0,0,0,0,0,0,0,0,0,
                           0,0,0,0,0,0,0,0,0,0,0,0,
                           0,0,0,0,0,0,0,0,0,0,0,0,
                           0,0,0,255,255,255,255,255,255,0,0,0,
@@ -26,22 +38,22 @@ float image1[12][12] =   {0,0,0,0,0,0,0,0,0,0,0,0,
 //                             };
 
 float **image = (float **)malloc(sizeof(float *) * 12);
-int **EdgeMask = (int **)malloc(sizeof(int *) * 3);
+float **EdgeMask = (float **)malloc(sizeof(float *) * 12);
+
 
 int main(int argc, char *argv[])  
 {
     for (int i = 0; i < 12;i++){
 		image[i] = image1[i];
 	}
-    for (int i = 0; i < 3;i++){
+    for (int i = 0; i < 12;i++){
 		EdgeMask[i] = EdgeMask1[i];
 	}
-
-    EdgeDetection(image, EdgeMask, 12, 12, 1000);
+    EdgeDetection(image, EdgeMask, 12, 12, 100);
     
     for (int i = 0; i < 12; i++){
 		for (int j = 0; j < 12; j++){
-			cout << image[i][j] << ' ';
+			cout << EdgeMask[i][j] << ' ';
 		}
 		cout << endl ;
 	}
@@ -51,10 +63,10 @@ int main(int argc, char *argv[])
  
 
 
-void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width , int threshold )
+void EdgeDetection ( float **ColorMask , float **EdgeMask , int height , int width , int threshold )
 {
 
-	
+	int Sobel[3][3] = {{1, 2, 1}, {0, 0, 0}, {-1, -2, -1}};
 	float padding_image[height+2][width + 2];
 
 		for (int i = 0; i < height+2 ; i++) // padding the 1. and last rows
@@ -79,7 +91,7 @@ void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width
 
 	float x_edge[height][width];
 	float y_edge[height][width];
-	//convolve for horizon edge
+
 	for (int i = 0; i < height ; i++){
 		for (int j = 0; j < width ; j++)
 		{   
@@ -87,7 +99,7 @@ void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width
             int x_sum = 0;
 			for (int k = 0; k < 3; k++){
                 for (int l = 0; l < 3; l++){
-                    x_sum = x_sum + (padding_image[i + k][j + l] * EdgeMask[k][l]);
+                    x_sum = x_sum + (padding_image[i + k][j + l] * Sobel[k][l]);
                 }
 			}
             if(abs(x_sum) > threshold){
@@ -99,9 +111,10 @@ void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width
             int y_sum = 0;
 			for (int k = 0; k < 3; k++){
                 for (int l = 0; l < 3; l++){
-                    y_sum = y_sum + (padding_image[i + k][j + l] * EdgeMask[l][k]);
+                    y_sum = y_sum + (padding_image[i + k][j + l] * Sobel[l][k]);
                 }
 			}
+
             if(abs(y_sum) > threshold){
             y_edge[i][j] = 255;
             }
@@ -112,9 +125,9 @@ void EdgeDetection ( float **ColorMask , int **EdgeMask , int height , int width
 		for (int j = 0; j < width ; j++)
 		{   
             if(x_edge[i][j] !=0 ||y_edge[i][j] !=0){
-                ColorMask[i][j] = 255;
+                EdgeMask[i][j] = 255;
             }
-            else ColorMask[i][j] = 0;
+            else EdgeMask[i][j] = 0;
 		}
 	}
 
